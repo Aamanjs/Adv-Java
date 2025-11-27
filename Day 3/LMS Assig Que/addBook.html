@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book Registration</title>
+<style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h2>Book Registration</h2>
+<form action="register" method="post"><br><br>
+	Book Title: <input type="text" name="title"><br><br>
+	Author Name: <input type="text" name="author"><br><br>
+	Genre: <input type="text" name="genre"><br><br>
+	Year Published: <input type="text" name="year_published"><br><br>
+	<input type="submit" name="Register">
+</form>
+</body>
+</html>
