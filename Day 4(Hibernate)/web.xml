@@ -1,0 +1,59 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
+	<display-name>Registration4</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>register.html</welcome-file>
+	</welcome-file-list>
+	
+	<servlet>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>com.cdac.RegisterServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ViewStudentsServlet</servlet-name>
+		<servlet-class>com.cdac.ViewStudentsServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ViewStudentsServlet</servlet-name>
+		<url-pattern>/view</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>EditStudentServlet</servlet-name>
+	    <servlet-class>com.cdac.EditStudentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>EditStudentServlet</servlet-name>
+	    <url-pattern>/editStudent</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>UpdateStudentServlet</servlet-name>
+	    <servlet-class>com.cdac.UpdateStudentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>UpdateStudentServlet</servlet-name>
+	    <url-pattern>/updateStudent</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>DeleteStudentServlet</servlet-name>
+	    <servlet-class>com.cdac.DeleteStudentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>DeleteStudentServlet</servlet-name>
+	    <url-pattern>/deleteStudent</url-pattern>
+	</servlet-mapping>
+</web-app>
