@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            margin-top: 38px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #007BFF, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #0056b3, #003f7f);
+        }
+        
+        .btn-green {
+		    margin-top: 0px;
+		    text-decoration: none;
+		    width: 100%;
+		    padding: 12px;
+		    background: linear-gradient(to right, #28a745, #218838); /* Green gradient */
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    font-size: 16px;
+		    cursor: pointer;
+		    transition: background 0.3s ease;
+		    display: inline-block;
+			width: 94%;
+			text-align: center;
+		}
+		
+		.btn-green:hover {
+		    background: linear-gradient(to right, #218838, #1e7e34);
+		    text-decoration: none;
+		}
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Student Registration Form</h2>
+        <form action="register" method="post">
+            <label for="name">Student Name</label>
+            <input type="text" name="name" id="name" required>
+
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" required>
+
+            <label for="mobile">Mobile</label>
+            <input type="text" name="mobile" id="mobile" required>
+
+            <input type="submit" value="Register" class="btn">
+        </form>
+        <br>
+        <a href="view" class="btn btn-green">View All Students</a>
+    </div>
+</body>
+</html>
