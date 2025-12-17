@@ -59,29 +59,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StudentDAO {
 	
-	@Autowired DataSource dataSource;
+	@Autowired DataSource datasource;
 	public void createStudent(Student s) throws SQLException {
-		Connection con = dataSource.getConnection();
+		Connection con = datasource.getConnection();
 		
-		String q = "insert into Student(id, name, email, course) values(?, ?, ?, ?)";
+		String q = "insert into Student(id, name, email, course) values(?,?,?,?)";
 		PreparedStatement pmt = con.prepareStatement(q);
-		
 		pmt.setInt(1, s.getId());
 		pmt.setString(2, s.getName());
 		pmt.setString(3, s.getEmail());
 		pmt.setString(4, s.getCourse());
 		
-		
 		pmt.executeUpdate();
 	}
 	
 	public ArrayList<Student> viewStudent() throws SQLException{
-	
 		ArrayList<Student> list = new ArrayList<Student>();
 		
-		Connection con = dataSource.getConnection();
+		Connection con = datasource.getConnection();
 		
-		String q = "select * from Student";
+		String q = "select * from Student order by id ";
 		PreparedStatement pmt = con.prepareStatement(q);
 		
 		ResultSet rs = pmt.executeQuery();
@@ -95,11 +92,57 @@ public class StudentDAO {
 			
 			list.add(s);
 		}
-		
 		return list;
 	}
 	
+	public void deleteStudent(int id) throws SQLException {
+		Connection con = datasource.getConnection();
+		
+		String q = "DELETE FROM Student WHERE id=?";
+		PreparedStatement pmt = con.prepareStatement(q);
+		
+		pmt.setInt(1, id);
+		pmt.executeUpdate();
+	}
+	
+	public Student getStudentById(int id) throws SQLException {
+		Connection con = datasource.getConnection();
+		
+		String q = "SELECT * FROM Student WHERE id = ?";
+		PreparedStatement pmt = con.prepareStatement(q);
+		
+		pmt.setInt(1, id);
+		
+		ResultSet rs = pmt.executeQuery();
+		
+		Student s = new Student();
+		
+		if(rs.next()) {
+			s.setId(rs.getInt("id"));
+			s.setName(rs.getString("name"));
+			s.setEmail(rs.getString("email"));
+			s.setCourse(rs.getString("course"));
+		}
+		return s;
+	}
+	
+	public void updateStudent(Student s) throws SQLException {
+		Connection con = datasource.getConnection();
+		
+	    String q = "UPDATE Student SET name=?, email=?, course=? WHERE id=?";
+	    PreparedStatement pmt = con.prepareStatement(q);
+	    
+	    pmt.setString(1, s.getName());
+	    pmt.setString(2, s.getEmail());
+	    pmt.setString(3,s.getCourse());
+	    pmt.setInt(4, s.getId());
+	    
+	    pmt.executeUpdate();
+	}
+	
+
 }
+
 ```
 
 ## StudentController.java
@@ -115,18 +158,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class StudentController {
 	
 	@Autowired StudentDAO dao;
 	@GetMapping("/register")
-	public String showRegister(){
+	public String showRegister() {
 		return "register";
 	}
 	
 	@PostMapping("/register")
-	public String doRegister( @ModelAttribute Student s) throws SQLException {
+	public String doRegister(@ModelAttribute Student s) throws SQLException {
 		dao.createStudent(s);
 		return "redirect:/view";
 	}
@@ -135,10 +179,32 @@ public class StudentController {
 	public String viewStudent(Model model) throws SQLException {
 		ArrayList<Student> list = dao.viewStudent();
 		model.addAttribute("Slist",list);
-		return "view"; 
+		return "view";
 	}
+	
+	@GetMapping("/delete")
+	public String deleteStudent(@RequestParam("id") int id) throws SQLException {
+		dao.deleteStudent(id);
+		return "redirect:/view";
+	}
+	
+	@GetMapping("/edit")
+	public String editStudent(@RequestParam("id") int id, Model model) throws SQLException {
+		Student s = dao.getStudentById(id);
+		model.addAttribute("student",s);
+		return "edit";
+	}
+	
+	@PostMapping("/update")
+	public String updateStudent(@ModelAttribute Student s) throws SQLException {
+		dao.updateStudent(s);
+		return "redirect:/view";
+	}
+	
+	
 
 }
+
 ```
 
 ## register.jsp
@@ -149,9 +215,9 @@ public class StudentController {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Registration</title>
+<title>register</title>
 </head>
-<body style="text-align: center;">
+<body>
 <h2>Student Registration</h2>
 	<form action="register" method="post">
 		Student Id: <input type="number" name="id" placeholder="Enter Student Id"><br>
@@ -160,13 +226,17 @@ public class StudentController {
 		Course: <input type="text" name="course" placeholder="Enter Course"><br>
 		<input type="submit" value="Register" style="background-color: blue; color: white; border-radius: 15px;"> 
 	</form>
+	
+	<form action="view" method="get" style="display: inline-block;">
+    		<input type="submit" value="View All Students" />
+	</form>
 </body>
 </html>
 ```
 ## view.jsp
 ```jsp
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -176,13 +246,38 @@ public class StudentController {
 </head>
 <body>
 	<c:forEach var="s" items="${Slist}">
-	<h2>Id: ${s.getId()}</h2>
+	<h2>Student Id: ${s.getId()}</h2>
 	<h2>Name: ${s.getName()}</h2>
 	<h2>Email: ${s.getEmail()}</h2>
 	<h2>Course: ${s.getCourse()}</h2>
+	<a href="edit?id=${s.id}">Edit</a>
+	<a href="delete?id=${s.id}" onclick="return confirm('Are you sure?')">Delete</a>
 	<hr/>
 	</c:forEach>
 	<a href="register">Back To Register</a>
+</body>
+</html>
+```
+
+## edit.jsp
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Update</title>
+</head>
+<body>
+	<h2>Update Student</h2>
+	<form action="update" method="post">
+		<input type="hidden" name="id" value="${student.id}" />
+        Name: <input type="text" name="name" value="${student.name}" /><br>
+        Email: <input type="email" name="email" value="${student.email}" /><br>
+        Course: <input type="text" name="course" value="${student.course}" /><br>
+        <input type="submit" value="Update" />
+	</form>
 </body>
 </html>
 ```
