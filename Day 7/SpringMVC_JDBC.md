@@ -209,77 +209,160 @@ public class StudentController {
 
 ## register.jsp
 ```jsp
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>register</title>
+    <title>Register Student</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f9; }
+        .form-box {
+            background:#fff; padding:20px; margin:50px auto;
+            width:400px; border-radius:6px; box-shadow:0 0 8px #ccc;
+        }
+        label { display:block; margin-top:10px; font-weight:bold; }
+        input[type=text], input[type=email] {
+            width:100%; padding:8px; margin-top:5px;
+            border:1px solid #ccc; border-radius:4px;
+        }
+        .btn-row {
+            margin-top:15px; display:flex; gap:10px;
+        }
+        input[type=submit], input[type=button] {
+            background:#0073e6; color:#fff; border:none;
+            padding:10px 20px; border-radius:4px; cursor:pointer;
+        }
+        input[type=button] {
+            background: #555;
+        }
+        input[type=submit]:hover, input[type=button]:hover {
+            background:#005bb5;
+        }
+    </style>
 </head>
 <body>
-<h2>Student Registration</h2>
-	<form action="register" method="post">
-		Student Id: <input type="number" name="id" placeholder="Enter Student Id"><br>
-		Name: <input type="text" name="name" placeholder="Enter Student Name"><br>
-		Email <input type="email" name="email" placeholder="Enter Mail id"><br>
-		Course: <input type="text" name="course" placeholder="Enter Course"><br>
-		<input type="submit" value="Register" style="background-color: blue; color: white; border-radius: 15px;"> 
-	</form>
-	
-	<form action="view" method="get" style="display: inline-block;">
-    		<input type="submit" value="View All Students" />
-	</form>
+    <div class="form-box">
+        <h2>Register Student</h2>
+        <form action="save" method="post">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" />
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" />
+
+            <label for="course">Course:</label>
+            <input type="text" name="course" id="course" />
+
+            <div class="btn-row">
+                <input type="submit" value="Register" />
+                <input type="button" value="View All Students" onclick="window.location.href='view'" />
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+
 ```
 ## view.jsp
 ```jsp
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>View</title>
+    <title>View Students</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f9; text-align:center; }
+        table {
+            width:80%; margin:20px auto; border-collapse:collapse;
+            background:#fff; box-shadow:0 0 8px #ccc;
+        }
+        th, td { padding:10px; border:1px solid #ddd; }
+        th { background:#0073e6; color:#fff; }
+        a { color:#0073e6; text-decoration:none; }
+        a:hover { text-decoration:underline; }
+        .btn-back {
+            margin:20px auto; display:inline-block;
+            background:#0073e6; color:#fff; padding:10px 20px;
+            border:none; border-radius:4px; cursor:pointer;
+        }
+        .btn-back:hover {
+            background:#005bb5;
+        }
+    </style>
 </head>
 <body>
-	<c:forEach var="s" items="${Slist}">
-	<h2>Student Id: ${s.getId()}</h2>
-	<h2>Name: ${s.getName()}</h2>
-	<h2>Email: ${s.getEmail()}</h2>
-	<h2>Course: ${s.getCourse()}</h2>
-	<a href="edit?id=${s.id}">Edit</a>
-	<a href="delete?id=${s.id}" onclick="return confirm('Are you sure?')">Delete</a>
-	<hr/>
-	</c:forEach>
-	<a href="register">Back To Register</a>
+    <h2>All Students</h2>
+    <table>
+        <tr>
+            <th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Actions</th>
+        </tr>
+        <c:forEach var="s" items="${Slist}">
+            <tr>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.email}</td>
+                <td>${s.course}</td>
+                <td>
+                    <a href="edit?id=${s.id}">Edit</a> |
+                    <a href="delete?id=${s.id}" onclick="return confirm('Delete this student?')">Delete</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+    <button class="btn-back" onclick="window.location.href='register'">Back to Register</button>
 </body>
 </html>
 ```
 
 ## edit.jsp
 ```jsp
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Update</title>
+    <title>Edit Student</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f9; }
+        .form-box {
+            background:#fff; padding:20px; margin:50px auto;
+            width:400px; border-radius:6px; box-shadow:0 0 8px #ccc;
+        }
+        label { display:block; margin-top:10px; font-weight:bold; }
+        input[type=text], input[type=email] {
+            width:100%; padding:8px; margin-top:5px;
+            border:1px solid #ccc; border-radius:4px;
+        }
+        input[type=submit] {
+            background:#0073e6; color:#fff; border:none;
+            padding:10px 20px; margin-top:15px;
+            border-radius:4px; cursor:pointer;
+        }
+        input[type=submit]:hover {
+            background:#005bb5;
+        }
+    </style>
 </head>
 <body>
-	<h2>Update Student</h2>
-	<form action="update" method="post">
-		<input type="hidden" name="id" value="${student.id}" />
-        Name: <input type="text" name="name" value="${student.name}" /><br>
-        Email: <input type="email" name="email" value="${student.email}" /><br>
-        Course: <input type="text" name="course" value="${student.course}" /><br>
-        <input type="submit" value="Update" />
-	</form>
+    <div class="form-box">
+        <h2>Edit Student</h2>
+        <form action="update" method="post">
+            <input type="hidden" name="id" value="${student.id}" />
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="${student.name}" />
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="${student.email}" />
+
+            <label for="course">Course:</label>
+            <input type="text" name="course" id="course" value="${student.course}" />
+
+            <input type="submit" value="Update" />
+        </form>
+    </div>
 </body>
 </html>
+
 ```
 
 ## dispatcher-servlet.xml
