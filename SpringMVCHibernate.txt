@@ -26,6 +26,7 @@ public class Student {
     // getters and setters
 }
 
+
 StudentDAO.java
 package com.cdac;
 
@@ -69,11 +70,26 @@ public class StudentDAO {
 		session.merge(s);
 	}
 	
-	
 
 }
 
+
 StudentController.java
+package com.cdac;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
 package com.cdac;
 
 import java.sql.SQLException;
@@ -92,6 +108,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class StudentController {
 	
 	@Autowired StudentDAO dao;
+	
+	@GetMapping("/")
+	public String home() {
+	    return "redirect:/register";
+	}
+
 	@GetMapping("/register")
 	public String showRegister() {
 		return "register";
@@ -133,6 +155,7 @@ public class StudentController {
 
 }
 
+
 applicationContext.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -165,7 +188,7 @@ applicationContext.xml
     <!-- DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/springHibDB"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/springhibdb"/>
         <property name="username" value="root"/>
         <property name="password" value="monu@123"/>
     </bean>
@@ -261,7 +284,7 @@ register.jsp
 <body>
     <div class="form-box">
         <h2>Register Student</h2>
-        <form action="save" method="post">
+        <form action="register" method="post">
             <label for="name">Name:</label>
             <input type="text" name="name" id="name" />
 
@@ -329,6 +352,7 @@ view.jsp
 </body>
 </html>
 
+
 dispatcher-servlet.xml
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 <mvc:annotation-driven/>
@@ -373,7 +397,7 @@ pom.xml
   <artifactId>SpringMVCHibernate</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>SpringMVCJDBC Maven Webapp</name>
+  <name>SpringMVCHibernate Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
         <java.version>17</java.version>
@@ -521,5 +545,3 @@ pom.xml
     </plugins>
   </build>
 </project>
-
-
