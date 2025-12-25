@@ -106,13 +106,15 @@ public class BookController {
 		model.addAttribute("books", bookRepository.findAll());
 		return "view";
 	}
-	
+
+	// View all Books
 	@GetMapping("/view")
 	public String viewBooks(Model model) {
 		model.addAttribute("books", bookRepository.findAll());
 		return "view";
 	}
-	
+
+	// Search book by ID
 	@GetMapping("/search")
 	public String searchBook(@RequestParam("book_id") int bookId, Model model) {
 		Optional<Book> book = bookRepository.findById(bookId);
