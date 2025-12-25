@@ -1,4 +1,4 @@
-## Book.java
+<img width="963" height="386" alt="image" src="https://github.com/user-attachments/assets/19beeb6c-e9c9-46df-9348-a759fefafae0" />## Book.java
 ```java
 package com.example.demo;
 
@@ -124,7 +124,36 @@ public class BookController {
 		}
 		return "view";
 	}
+
+	// Delete book by ID
+	@GetMapping("/delete/{id}")
+	public String deleteBook(@PathVariable("id") int id, Model model) {
+		bookRepository.deleteById(id);
+		model.addAttribute("books", bookRepository.findAll());
+		return "view";
+	}
 	
+	// Show update form
+	@GetMapping("update/{id}")
+	public String showUpdateForm(@PathVariable("id") int id, Model model) {
+		Optional<Book> book = bookRepository.findById(id);
+		if(book.isPresent()) {
+			model.addAttribute("book", book.get());
+			return "update";
+		} else {
+			model.addAttribute("books", bookRepository.findAll());
+			model.addAttribute("message", "Book not found with ID: " + id);
+			return "view";
+		}
+	}
+	
+	//Handle update
+	@PostMapping("/update")
+	public String updateBook(@ModelAttribute Book book, Model model) {
+		bookRepository.save(book);
+		model.addAttribute("books", bookRepository.findAll());
+		return "view";
+	}
 	
 	
 
@@ -185,16 +214,47 @@ public class BookController {
 			<th>Book Name</th>
 			<th>Author</th>
 			<th>Price</th>
+			<th>Actions</th>
 		</tr>
 		<tr th:each="b : ${books}">
 			<td th:text="${b.book_id}"></td>
 			<td th:text="${b.book_name}"></td>
 			<td th:text="${b.author}"></td>
 			<td th:text="${b.price}"></td>
+			<td>
+                <a th:href="@{/update/{id}(id=${b.book_id})}">Update</a> |
+                <a th:href="@{/delete/{id}(id=${b.book_id})}">Delete</a>
+            </td>
+			
 		</tr>
 		</tbody>
 	</table><br>
 	<a th:href="@{/register}">Go to Registration Page</a>
+</body>
+</html>
+```
+
+## update.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Books</title>
+</head>
+<body>
+	<h1>Library Book Management</h1><hr><br><br>
+    <h2>Update Book</h2><br>
+
+    <form th:action="@{/update}" th:object="${book}" method="post">
+    		Book Id: <input type="number" th:field="*{book_id}" readonly><br><br>
+    		Book Name: <input type="text" th:field="*{book_name}"><br><br>
+        Author: <input type="text" th:field="*{author}"><br><br>
+        Price: <input type="number" th:field="*{price}"><br><br>
+        <button type="submit">Update</button>
+    </form><br>
+	<a th:href="@{/view}">Back to View Page</a>
 </body>
 </html>
 ```
