@@ -1,4 +1,4 @@
-<img width="963" height="386" alt="image" src="https://github.com/user-attachments/assets/19beeb6c-e9c9-46df-9348-a759fefafae0" />## Book.java
+## Book.java
 ```java
 package com.example.demo;
 
